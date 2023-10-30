@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Gummyz.unity
+    guid: f0d34e9843b6b764694f8a399cfc96cc
+  - enabled: 1
+    path: Assets/Mirror/Examples/Pong/Scenes/Scene.unity
+    guid: 89a84548859e3b643b4fb27984dc2b0d
+  - enabled: 1
     path: Assets/Scenes/InGame.unity
     guid: feb028cd4b7fde241bdd9e85f32b22de
   m_configObjects: {}
