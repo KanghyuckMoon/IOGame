@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
@@ -6,25 +7,55 @@ using Mirror;
 [AddComponentMenu("")]
 public class GumyzNetworkManager : NetworkManager
 {
+    public readonly List<Transform> playerList = new List<Transform>();
+    [SerializeField] MonsterSpawner monsterSpawner;
+    private int monsterCount;
+    private float delay = 0f;
+
+    public override void OnStartServer()
+    {
+        StartCoroutine(SpawnMonster());
+    }
+
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        // add player at correct spawn position
-        //Transform start = numPlayers == 0 ? leftRacketSpawn : rightRacketSpawn;
         GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        player.GetComponent<JoinBehaviour>().SetClient(conn);
         NetworkServer.AddPlayerForConnection(conn, player);
 
-        // spawn ball if two players
-        //if (numPlayers == 2)
-        //{
-        //    ball = Instantiate(spawnPrefabs.Find(prefab => prefab.name == "Ball"));
-        //    NetworkServer.Spawn(ball);
-        //}
+        foreach(var playerTrm in playerList)
+		{
+			try
+            {
+                Player playerObj = playerTrm.GetComponent<Player>();
+                playerObj.SetNickName();
+            }
+            catch(System.Exception e)
+			{
+                Debug.LogError(e);
+			}
+        }
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        // destroy ball
-        // call base functionality (actually destroys the player)
         base.OnServerDisconnect(conn);
+    }
+
+    private IEnumerator SpawnMonster()
+	{
+        while(true)
+		{
+            yield return new WaitForSeconds(1f);
+            Spawn();
+        }
+	}
+
+    public void Spawn()
+    {
+        monsterCount++;
+        GameObject monsterInstance = Instantiate(NetworkManager.singleton.spawnPrefabs.Find(prefab => prefab.name == "Monster"));
+        monsterInstance.transform.position = Utils.GetRandomPosition();
+        NetworkServer.Spawn(monsterInstance);
     }
 }
