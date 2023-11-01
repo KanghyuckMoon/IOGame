@@ -10,6 +10,7 @@ public class Monster : NetworkBehaviour
 	private ModelHandler modelHandler;
 	private Vector3 lastPoint;
 	private int hp = 10;
+	private Vector3 currentDirection;
 
 	private void Start()
 	{
@@ -30,6 +31,7 @@ public class Monster : NetworkBehaviour
 				direction = target.transform.position - transform.position;
 				direction.y = 0;
 				direction = direction.normalized;
+				currentDirection = direction;
 				Move(direction);
 				Rotate(direction);
 				lastPoint = transform.position;
@@ -40,7 +42,8 @@ public class Monster : NetworkBehaviour
 			direction = transform.position - lastPoint;
 			direction.y = 0;
 			direction = direction.normalized;
-			if(direction != Vector3.zero)
+			currentDirection = direction;
+			if (direction != Vector3.zero)
 			{
 				Rotate(direction);
 				lastPoint = transform.position;
@@ -105,6 +108,7 @@ public class Monster : NetworkBehaviour
 	private void HitRpc(int currentHp)
 	{
 		hp = currentHp;
+		transform.Translate(-currentDirection * 1);
 		modelHandler.HitChangeMaterial();
 	}
 

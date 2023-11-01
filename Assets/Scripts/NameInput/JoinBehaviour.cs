@@ -36,10 +36,8 @@ public class JoinBehaviour : NetworkBehaviour
 	{
 		GameObject player = Instantiate(NetworkManager.singleton.spawnPrefabs.Find(prefab => prefab.name == "Player"), Vector3.zero, Quaternion.identity);
 		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player.transform);
+		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary.Add(conn.connectionId, player.transform);
 		NetworkServer.Spawn(player, gameObject);
-		var weapon = Instantiate(NetworkManager.singleton.spawnPrefabs.Find(prefab => prefab.name == "Weapon"));
-		weapon.GetComponent<WeaponHandler>().targetTrm = player.transform;
-		NetworkServer.Spawn(weapon);
 		RpcHandleMessage(message);
 	}
 

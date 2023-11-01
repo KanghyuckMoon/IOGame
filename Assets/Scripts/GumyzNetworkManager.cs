@@ -8,6 +8,7 @@ using Mirror;
 public class GumyzNetworkManager : NetworkManager
 {
     public readonly List<Transform> playerList = new List<Transform>();
+    public readonly Dictionary<int, Transform> playerDictionary = new Dictionary<int, Transform>();
     [SerializeField] MonsterSpawner monsterSpawner;
     private int monsterCount;
     private float delay = 0f;

@@ -18,27 +18,16 @@ public class WeaponHandler : NetworkBehaviour
 	{
 		currentCooldown = weaponStat.weaponStatList[level].cooldownDuration;
 	}
-
-	[ServerCallback]
-	protected virtual void OnTriggerEnter(Collider other)
-	{
-		if(other.CompareTag("Enemy"))
-		{
-			other.GetComponent<Monster>().Hit(1);
-		}
-		else if(other.CompareTag("Player"))
-		{
-			//other.GetComponent<Player>();
-		}
-	}
-
+		
 	protected virtual void FixedUpdate()
 	{
-		if (!isServer) return;
-		currentCooldown -= Time.fixedDeltaTime;
-		if(currentCooldown <= 0f)
+		if (isOwned)
 		{
-			Attack();
+			currentCooldown -= Time.fixedDeltaTime;
+			if (currentCooldown <= 0f)
+			{
+				Attack();
+			}
 		}
 	}
 

@@ -14,8 +14,11 @@ public class WeaponSO : ScriptableObject
 public class WeaponStat
 {
 	public string weaponKey;
-	public float damage = 10;
+	public float range = 2f;
 	public float speed = 10;
+	public float duration = 1;
 	public float cooldownDuration = 1;
+	public int damage = 10;
+	public int amount = 1;
 	public int pierce = 1;
 }
