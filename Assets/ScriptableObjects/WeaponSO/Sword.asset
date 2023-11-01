@@ -12,5 +12,97 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf79f12e9ba22e046a7af1523262d17c, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
+  itemSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   weaponKey: 
   maxLevel: 10
+  weaponStatList:
+  - weaponKey: 
+    description: DEsc
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: Descc2
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1
+  - weaponKey: 
+    description: 
+    range: 2
+    speed: 10
+    duration: 1
+    cooldownDuration: 1
+    damage: 10
+    amount: 1
+    pierce: 1

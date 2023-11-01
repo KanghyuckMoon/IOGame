@@ -5,13 +5,24 @@ using Mirror;
 
 public class WeaponHandler : NetworkBehaviour
 {
-	[Header("Weapon Stats")]
-	public WeaponSO weaponStat;
+	public bool IsMaxLevel
+	{
+		get
+		{
+			return level >= weaponStat.maxLevel;
+		}
+	}
+
+	public WeaponSO WeaponStatSO => weaponStat;
+	public int Level => level;
+
+	[SerializeField] protected WeaponSO weaponStat;
+	[SerializeField] protected Transform playerTrm;
 	protected float currentCooldown;
 	protected int level = 0;
 
-	public Transform playerTrm;
-	
+	[SerializeField] private InventoryBehaviour inventory;
+
 	private float time = 0f;
 	private bool isEquip;
 		
@@ -38,6 +49,7 @@ public class WeaponHandler : NetworkBehaviour
 		{
 			isEquip = true;
 			gameObject.SetActive(true);
+			inventory.AddEquipWeapon(this);
 		}
 		else
 		{

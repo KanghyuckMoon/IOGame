@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class WeaponSO : ScriptableObject
 {
+	public Sprite itemSprite;
 	public string weaponKey;
 	public int maxLevel = 10;
 	public WeaponStat[] weaponStatList = new WeaponStat[10];
@@ -14,6 +15,7 @@ public class WeaponSO : ScriptableObject
 public class WeaponStat
 {
 	public string weaponKey;
+	public string description;
 	public float range = 2f;
 	public float speed = 10;
 	public float duration = 1;
