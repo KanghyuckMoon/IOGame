@@ -47,15 +47,22 @@ public class GumyzNetworkManager : NetworkManager
         while(true)
 		{
             yield return new WaitForSeconds(1f);
-            Spawn();
+            MonsterSpawn();
         }
 	}
 
-    public void Spawn()
+    public void MonsterSpawn()
     {
         monsterCount++;
-        GameObject monsterInstance = Instantiate(NetworkManager.singleton.spawnPrefabs.Find(prefab => prefab.name == "Monster"));
-        monsterInstance.transform.position = Utils.GetRandomPosition();
-        NetworkServer.Spawn(monsterInstance);
+        Spawn("Monster", Utils.GetRandomPosition());
     }
+
+    public void Spawn(string key, Vector3 pos)
+	{
+        GameObject instance = Instantiate(spawnPrefabs.Find(prefab => prefab.name == key));
+        instance.transform.position = pos;
+        NetworkServer.Spawn(instance);
+    }
+
+
 }

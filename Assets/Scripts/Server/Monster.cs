@@ -84,10 +84,28 @@ public class Monster : NetworkBehaviour
 	{
 		Debug.Log($"{hp} {damage}");
 		hp -= damage;
-		if(hp <= 0)
+		if (hp <= 0)
 		{
-			gameObject.SetActive(false);
+			((GumyzNetworkManager)GumyzNetworkManager.singleton).Spawn("Exp", transform.position);
+			ActiveRpc(false);
 		}
+		else
+		{
+			HitRpc(hp);
+		}
+	}
+
+	[ClientRpc]
+	private void ActiveRpc(bool b)
+	{
+		gameObject.SetActive(b);
+	}
+
+	[ClientRpc]
+	private void HitRpc(int currentHp)
+	{
+		hp = currentHp;
+		modelHandler.HitChangeMaterial();
 	}
 
 }

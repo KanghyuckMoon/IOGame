@@ -7,14 +7,55 @@ public class Player : NetworkBehaviour
     public float speed = 30;
     public Rigidbody rigid;
     [SerializeField] ModelHandler modelHandler;
+    [SerializeField] private ClientHUD clientHud;
     [SerializeField] private TextMeshProUGUI nickName;
-
+    private int level = 1;
+    private int exp = 0;
     private Vector3 _direction;
+
+    public System.Action<int, int> OnExpChange;
+    public System.Action<int> OnLevelChange;
+
 
     private void Start()
     {
+        level = 1;
+        exp = 0;
         modelHandler = GetComponentInChildren<ModelHandler>();
         SetNickName();
+        if(isOwned)
+		{
+            clientHud.gameObject.SetActive(true);
+            OnExpChange += clientHud.UpdateExp;
+            OnLevelChange += clientHud.UpdateLevel;
+            OnExpChange.Invoke(exp, level);
+            OnLevelChange.Invoke(level);
+
+        }
+    }
+
+    [ServerCallback]
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Exp"))
+        {
+            AddExp(other.gameObject);
+        }
+    }
+
+    [ClientRpc]
+    private void AddExp(GameObject expObj)
+	{
+        exp++;
+        if(exp > level * level)
+		{
+            exp = 0;
+            level++;
+            OnLevelChange?.Invoke(level);
+        }
+        OnExpChange?.Invoke(exp, level);
+
+        expObj.SetActive(false);
     }
 
     public void SetNickName()
@@ -36,7 +77,7 @@ public class Player : NetworkBehaviour
             Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
             rigid.velocity = direction * speed * Time.fixedDeltaTime;
-
+            ConsiderFieldLimit();
             RotateModel(direction);
         }
     }
