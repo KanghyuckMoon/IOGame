@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class BoneBehaviour : NetworkBehaviour, IWeapon
+public class SwordBehaviour : NetworkBehaviour, IWeapon
 {
-	public Transform targetTrm;
-	private float time = 0f;
-
 	public Transform TargetTransform
 	{
 		get
@@ -31,7 +28,9 @@ public class BoneBehaviour : NetworkBehaviour, IWeapon
 		}
 	}
 
+	private Transform targetTrm;
 	private WeaponStat weaponStat;
+	private Vector3 direction;
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -48,8 +47,7 @@ public class BoneBehaviour : NetworkBehaviour, IWeapon
 	void FixedUpdate()
 	{
 		if (!isServer) return;
-		time += Time.fixedDeltaTime * weaponStat.speed;
-		transform.position = targetTrm.transform.position + new Vector3(Mathf.Cos(time), 0, Mathf.Sin(time) * weaponStat.range);
+		transform.position = targetTrm.position;
 	}
 
 	void IWeapon.SetWeaponStat(WeaponStat weaponStat)
@@ -61,6 +59,12 @@ public class BoneBehaviour : NetworkBehaviour, IWeapon
 			yield return new WaitForSeconds(weaponStat.duration);
 			DestoryWeaponRpc();
 		}
+	}
+
+	void IWeapon.SetDirection(Vector3 direction)
+	{
+		this.direction = direction;
+		transform.forward = direction;
 	}
 
 	[ClientRpc]

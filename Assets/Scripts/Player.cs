@@ -6,15 +6,17 @@ public class Player : NetworkBehaviour
 {
     public float speed = 30;
     public Rigidbody rigid;
+    public Vector3 LastDirection => lastDirection;
     [SerializeField] ModelHandler modelHandler;
     [SerializeField] private ClientHUD clientHud;
     [SerializeField] private TextMeshProUGUI nickName;
     private int level = 1;
+    private int currentLevel = 1;
     private int exp = 0;
-    private Vector3 _direction;
+    private Vector3 lastDirection;
 
     public System.Action<int, int> OnExpChange;
-    public System.Action<int> OnLevelChange;
+    public System.Action<int, int> OnLevelChange;
 
 
     private void Start()
@@ -29,7 +31,7 @@ public class Player : NetworkBehaviour
             OnExpChange += clientHud.UpdateExp;
             OnLevelChange += clientHud.UpdateLevel;
             OnExpChange.Invoke(exp, level);
-            OnLevelChange.Invoke(level);
+            OnLevelChange.Invoke(currentLevel, level);
 
         }
     }
@@ -47,15 +49,29 @@ public class Player : NetworkBehaviour
     private void AddExp(GameObject expObj)
 	{
         exp++;
-        if(exp > level * level)
+        if(exp >= level * level)
 		{
             exp = 0;
             level++;
-            OnLevelChange?.Invoke(level);
+            OnLevelChange?.Invoke(currentLevel, level);
         }
         OnExpChange?.Invoke(exp, level);
 
         expObj.SetActive(false);
+    }
+
+    [Command]
+    public void LevelUp()
+	{
+        currentLevel++;
+        LevelUpRpc(currentLevel);
+    }
+
+    [ClientRpc]
+    private void LevelUpRpc(int currentLv)
+    {
+        currentLevel = currentLv;
+        OnLevelChange?.Invoke(currentLevel, level);
     }
 
     public void SetNickName()

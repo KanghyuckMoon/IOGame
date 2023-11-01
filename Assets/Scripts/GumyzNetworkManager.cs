@@ -49,6 +49,7 @@ public class GumyzNetworkManager : NetworkManager
 		{
             yield return new WaitForSeconds(1f);
             MonsterSpawn();
+            ExpSpawn();
         }
 	}
 
@@ -57,13 +58,25 @@ public class GumyzNetworkManager : NetworkManager
         monsterCount++;
         Spawn("Monster", Utils.GetRandomPosition());
     }
+    public void ExpSpawn()
+    {
+        Spawn("Exp", Utils.GetRandomPosition());
+    }
 
-    public void Spawn(string key, Vector3 pos)
+    public GameObject Spawn(string key, Vector3 pos)
 	{
         GameObject instance = Instantiate(spawnPrefabs.Find(prefab => prefab.name == key));
         instance.transform.position = pos;
         NetworkServer.Spawn(instance);
+        return instance;
     }
 
+    public GameObject SpawnWithOutSpawn(string key, Vector3 pos)
+    {
+        GameObject instance = Instantiate(spawnPrefabs.Find(prefab => prefab.name == key));
+        instance.transform.position = pos;
+        //NetworkServer.Spawn(instance);
+        return instance;
+    }
 
 }

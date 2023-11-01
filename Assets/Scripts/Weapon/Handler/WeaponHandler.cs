@@ -10,14 +10,10 @@ public class WeaponHandler : NetworkBehaviour
 	protected float currentCooldown;
 	protected int level = 0;
 
-	public Transform targetTrm;
+	public Transform playerTrm;
 	
 	private float time = 0f;
-
-	protected virtual void Start()
-	{
-		currentCooldown = weaponStat.weaponStatList[level].cooldownDuration;
-	}
+	private bool isEquip;
 		
 	protected virtual void FixedUpdate()
 	{
@@ -34,5 +30,18 @@ public class WeaponHandler : NetworkBehaviour
 	protected virtual void Attack()
 	{
 		currentCooldown = weaponStat.weaponStatList[level].cooldownDuration;
+	}
+
+	public void LevelUp()
+	{
+		if(!isEquip)
+		{
+			isEquip = true;
+			gameObject.SetActive(true);
+		}
+		else
+		{
+			level++;
+		}
 	}
 }

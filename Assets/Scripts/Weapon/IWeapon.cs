@@ -25,4 +25,8 @@ public interface IWeapon
 	{
 		TargetTransform = target;
 	}
+	public void SetDirection(Vector3 direction)
+	{
+
+	}
 }
