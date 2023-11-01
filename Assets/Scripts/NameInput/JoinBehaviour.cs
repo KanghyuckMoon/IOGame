@@ -35,7 +35,7 @@ public class JoinBehaviour : NetworkBehaviour
 	private void CmdSendMessage(string message)
 	{
 		GameObject player = Instantiate(NetworkManager.singleton.spawnPrefabs.Find(prefab => prefab.name == "Player"), Vector3.zero, Quaternion.identity);
-		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player.transform);
+		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player.GetComponent<Player>());
 		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary.Add(conn.connectionId, player.transform);
 		NetworkServer.Spawn(player, gameObject);
 		RpcHandleMessage(message);

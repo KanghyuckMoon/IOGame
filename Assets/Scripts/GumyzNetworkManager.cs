@@ -7,7 +7,7 @@ using Mirror;
 [AddComponentMenu("")]
 public class GumyzNetworkManager : NetworkManager
 {
-    public readonly List<Transform> playerList = new List<Transform>();
+    public readonly List<Player> playerList = new List<Player>();
     public readonly Dictionary<int, Transform> playerDictionary = new Dictionary<int, Transform>();
     [SerializeField] MonsterSpawner monsterSpawner;
     private int monsterCount;
@@ -24,11 +24,10 @@ public class GumyzNetworkManager : NetworkManager
         player.GetComponent<JoinBehaviour>().SetClient(conn);
         NetworkServer.AddPlayerForConnection(conn, player);
 
-        foreach(var playerTrm in playerList)
+        foreach(var playerObj in playerList)
 		{
 			try
             {
-                Player playerObj = playerTrm.GetComponent<Player>();
                 playerObj.SetNickName();
             }
             catch(System.Exception e)

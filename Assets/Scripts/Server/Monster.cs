@@ -63,7 +63,7 @@ public class Monster : NetworkBehaviour
 					target = null;
 					return;
 				}
-				target = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList[Random.Range(0, count)];
+				target = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList[Random.Range(0, count)].transform;
 				//Å¸°Ù ¼³Á¤
 			}
 		}
