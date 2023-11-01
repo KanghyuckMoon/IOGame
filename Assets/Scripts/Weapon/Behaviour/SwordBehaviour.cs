@@ -31,6 +31,7 @@ public class SwordBehaviour : NetworkBehaviour, IWeapon
 	private Transform targetTrm;
 	private WeaponStat weaponStat;
 	private Vector3 direction;
+	private GameObject player;
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -38,9 +39,9 @@ public class SwordBehaviour : NetworkBehaviour, IWeapon
 		{
 			other.GetComponent<Monster>().Hit(weaponStat.damage);
 		}
-		else if (other.CompareTag("Player"))
+		else if (other.CompareTag("Player") && other.gameObject != player)
 		{
-			//other.GetComponent<Player>();
+			other.GetComponent<Player>().Hit(weaponStat.damage);
 		}
 	}
 
@@ -66,10 +67,15 @@ public class SwordBehaviour : NetworkBehaviour, IWeapon
 		this.direction = direction;
 		transform.forward = direction;
 	}
+	public void SetPlayer(GameObject player)
+	{
+		this.player = player;
+	}
 
 	[ClientRpc]
 	private void DestoryWeaponRpc()
 	{
 		gameObject.SetActive(false);
 	}
+
 }

@@ -30,6 +30,7 @@ public class BoneHandler : WeaponHandler
 		var weapon = ((GumyzNetworkManager)NetworkManager.singleton).SpawnWithOutSpawn("Bone", playerTrm.position);
 		IWeapon iWeapon = weapon.GetComponent<IWeapon>();
 		iWeapon.SetTargetTrm(playerTrm);
+		iWeapon.SetPlayer(playerTrm.gameObject);
 		iWeapon.SetWeaponStat(weaponStat.weaponStatList[level]);
 		NetworkServer.Spawn(weapon);
 	}

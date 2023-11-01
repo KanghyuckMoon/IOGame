@@ -1,6 +1,7 @@
 using Mirror;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Player : NetworkBehaviour
 {
@@ -10,10 +11,12 @@ public class Player : NetworkBehaviour
     [SerializeField] ModelHandler modelHandler;
     [SerializeField] private ClientHUD clientHud;
     [SerializeField] private TextMeshProUGUI nickName;
+    [SerializeField] private Image hpImage;
     private int level = 1;
     private int currentLevel = 1;
     private int exp = 0;
     private Vector3 lastDirection;
+    private int hp = 20;
 
     public System.Action<int, int> OnExpChange;
     public System.Action<int, int> OnLevelChange;
@@ -21,6 +24,7 @@ public class Player : NetworkBehaviour
 
     private void Start()
     {
+        hp = 20;
         level = 1;
         exp = 0;
         modelHandler = GetComponentInChildren<ModelHandler>();
@@ -36,6 +40,20 @@ public class Player : NetworkBehaviour
         }
     }
 
+    public void Hit(int damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+        {
+            ((GumyzNetworkManager)GumyzNetworkManager.singleton).Spawn("Exp", transform.position);
+            ActiveRpc(false);
+        }
+        else
+        {
+            HitRpc(hp);
+        }
+    }
+
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
@@ -43,6 +61,10 @@ public class Player : NetworkBehaviour
         {
             AddExp(other.gameObject);
         }
+        else if(other.CompareTag("Enemy"))
+		{
+            Hit(1);
+		}
     }
 
     [ClientRpc]
@@ -187,5 +209,20 @@ public class Player : NetworkBehaviour
     private void SetNickNameRpc(string text)
     {
         nickName.text = text;
+    }
+
+    [ClientRpc]
+    private void ActiveRpc(bool b)
+    {
+        gameObject.SetActive(b);
+    }
+
+    [ClientRpc]
+    private void HitRpc(int currentHp)
+    {
+        hp = currentHp;
+        hpImage.fillAmount = (float)hp / 20;
+        transform.Translate(-lastDirection * 1);
+        modelHandler.HitChangeMaterial();
     }
 }

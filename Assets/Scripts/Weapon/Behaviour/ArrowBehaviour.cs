@@ -32,6 +32,7 @@ public class ArrowBehaviour : NetworkBehaviour, IWeapon
 	private Transform targetTrm;
 	private WeaponStat weaponStat;
 	private Vector3 direction;
+	private GameObject player;
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -39,9 +40,9 @@ public class ArrowBehaviour : NetworkBehaviour, IWeapon
 		{
 			other.GetComponent<Monster>().Hit(weaponStat.damage);
 		}
-		else if (other.CompareTag("Player"))
+		else if (other.CompareTag("Player") && other.gameObject != player)
 		{
-			//other.GetComponent<Player>();
+			other.GetComponent<Player>().Hit(weaponStat.damage);
 		}
 	}
 
@@ -72,5 +73,10 @@ public class ArrowBehaviour : NetworkBehaviour, IWeapon
 	private void DestoryWeaponRpc()
 	{
 		gameObject.SetActive(false);
+	}
+
+	public void SetPlayer(GameObject player)
+	{
+		this.player = player;
 	}
 }

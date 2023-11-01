@@ -29,4 +29,7 @@ public interface IWeapon
 	{
 
 	}
+
+	public void SetPlayer(GameObject player);
+
 }

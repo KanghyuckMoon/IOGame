@@ -38,6 +38,7 @@ public class SkullHandler : WeaponHandler
 		var weapon = ((GumyzNetworkManager)NetworkManager.singleton).SpawnWithOutSpawn("Skull", playerTrm.position);
 		IWeapon iWeapon = weapon.GetComponent<IWeapon>();
 		iWeapon.SetTargetTrm(target);
+		iWeapon.SetPlayer(playerTrm.gameObject);
 		iWeapon.SetWeaponStat(weaponStat.weaponStatList[level]);
 		NetworkServer.Spawn(weapon);
 	}

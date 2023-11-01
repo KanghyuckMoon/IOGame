@@ -33,6 +33,7 @@ public class SwordHandler : WeaponHandler
 		IWeapon iWeapon = weapon.GetComponent<IWeapon>();
 		iWeapon.SetTargetTrm(playerTrm);
 		iWeapon.SetDirection(player.LastDirection);
+		iWeapon.SetPlayer(playerTrm.gameObject);
 		iWeapon.SetWeaponStat(weaponStat.weaponStatList[level]);
 		NetworkServer.Spawn(weapon);
 	}

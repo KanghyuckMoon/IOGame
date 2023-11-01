@@ -32,6 +32,7 @@ public class ArrowHandler : WeaponHandler
 		var weapon = ((GumyzNetworkManager)NetworkManager.singleton).SpawnWithOutSpawn("Arrow", playerTrm.position);
 		IWeapon iWeapon = weapon.GetComponent<IWeapon>();
 		iWeapon.SetTargetTrm(playerTrm);
+		iWeapon.SetPlayer(playerTrm.gameObject);
 		iWeapon.SetDirection(player.LastDirection);
 		iWeapon.SetWeaponStat(weaponStat.weaponStatList[level]);
 		NetworkServer.Spawn(weapon);

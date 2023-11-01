@@ -33,6 +33,7 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 	private ModelHandler modelHandler;
 	private Vector3 lastPoint;
 	private Vector3 currentDirection;
+	private GameObject player;
 
 	private void Start()
 	{
@@ -46,9 +47,9 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 		{
 			other.GetComponent<Monster>().Hit(weaponStat.damage);
 		}
-		else if (other.CompareTag("Player"))
+		else if (other.CompareTag("Player") && other.gameObject != player)
 		{
-			//other.GetComponent<Player>();
+			other.GetComponent<Player>().Hit(weaponStat.damage);
 		}
 	}
 
@@ -100,5 +101,10 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 	private void DestoryWeaponRpc()
 	{
 		gameObject.SetActive(false);
+	}
+
+	public void SetPlayer(GameObject player)
+	{
+		this.player = player;
 	}
 }
