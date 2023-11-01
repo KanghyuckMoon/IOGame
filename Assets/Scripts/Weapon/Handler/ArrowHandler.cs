@@ -29,7 +29,7 @@ public class ArrowHandler : WeaponHandler
 	[Command]
 	private void SpawnArrow()
 	{
-		var weapon = ((GumyzNetworkManager)NetworkManager.singleton).SpawnWithOutSpawn("Sword", playerTrm.position);
+		var weapon = ((GumyzNetworkManager)NetworkManager.singleton).SpawnWithOutSpawn("Arrow", playerTrm.position);
 		IWeapon iWeapon = weapon.GetComponent<IWeapon>();
 		iWeapon.SetTargetTrm(playerTrm);
 		iWeapon.SetDirection(player.LastDirection);

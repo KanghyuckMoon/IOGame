@@ -13,7 +13,14 @@ public class UpgradeButton : MonoBehaviour
 	public void SetUpgradeButton(WeaponSO so, int level, System.Action action)
 	{
 		itemImage.sprite = so.itemSprite;
-		descriptionText.text = so.weaponStatList[level].description;
+		if(level == 0)
+		{
+			descriptionText.text = so.weaponStatList[level].description;
+		}
+		else
+		{
+			descriptionText.text = so.weaponStatList[level + 1].description;
+		}
 		button.onClick.RemoveAllListeners();
 		button.onClick.AddListener(() => action());
 	}

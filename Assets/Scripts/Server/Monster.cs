@@ -85,7 +85,6 @@ public class Monster : NetworkBehaviour
 
 	public void Hit(int damage)
 	{
-		Debug.Log($"{hp} {damage}");
 		hp -= damage;
 		if (hp <= 0)
 		{

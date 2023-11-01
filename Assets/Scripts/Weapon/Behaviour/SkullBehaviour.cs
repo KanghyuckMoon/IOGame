@@ -49,6 +49,7 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 		Vector3 direction = (targetTrm.position - transform.position);
 		direction.y = 0;
 		direction = direction.normalized;
+		transform.LookAt(targetTrm);
 		transform.Translate(direction * weaponStat.speed * Time.fixedDeltaTime);
 	}
 

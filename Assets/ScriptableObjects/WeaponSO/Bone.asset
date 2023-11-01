@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf79f12e9ba22e046a7af1523262d17c, type: 3}
   m_Name: Bone
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  itemSprite: {fileID: 21300000, guid: 844a1050d03ba5046bfb86af34a81e47, type: 3}
   weaponKey: Bone
   maxLevel: 10
   weaponStatList:
   - weaponKey: Bone
-    description: DEsc
+    description: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uBCC0\uC744 \uB3C4\uB294 \uBF08\uB97C
+      \uC18C\uD658\uD569\uB2C8\uB2E4"
     range: 2
     speed: 2
     duration: 4
@@ -26,82 +27,82 @@ MonoBehaviour:
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: Descc2
+    description: "\uCFE8\uD0C0\uC784\uC774 \uC904\uC5B4\uB4ED\uB2C8\uB2E4"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
     pierce: 1
   - weaponKey: Bone
-    description: 
+    description: "\uC784\uC2DC"
     range: 2
-    speed: 10
-    duration: 1
+    speed: 2
+    duration: 4
     cooldownDuration: 3
     damage: 2
     amount: 1
