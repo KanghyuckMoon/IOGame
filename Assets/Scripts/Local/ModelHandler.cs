@@ -11,6 +11,7 @@ public class ModelHandler : MonoBehaviour
 
 	public void SetRotate(Vector3 direction)
 	{
+		if (direction == Vector3.zero) return;
 		transform.forward = direction;
 	}
 

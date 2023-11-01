@@ -20,7 +20,7 @@ MonoBehaviour:
     description: "\uC55E\uC744 \uACF5\uACA9\uD569\uB2C8\uB2E4"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 2
     damage: 5
     amount: 1
@@ -29,7 +29,7 @@ MonoBehaviour:
     description: "\uCFE8\uD0C0\uC784\uC774 \uC904\uC5B4\uB4ED\uB2C8\uB2E4"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -38,7 +38,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -47,7 +47,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -56,7 +56,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -65,7 +65,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -74,7 +74,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -83,7 +83,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -92,7 +92,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1
@@ -101,7 +101,7 @@ MonoBehaviour:
     description: "\uC784\uC2DC"
     range: 2
     speed: 10
-    duration: 1
+    duration: 0.2
     cooldownDuration: 1
     damage: 5
     amount: 1

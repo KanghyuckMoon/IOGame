@@ -10,10 +10,10 @@ public class UpgradeButton : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI descriptionText;
 	[SerializeField] private Button button;
 
-	public void SetUpgradeButton(WeaponSO so, int level, System.Action action)
+	public void SetUpgradeButton(WeaponSO so, bool isEquip, int level, System.Action action)
 	{
 		itemImage.sprite = so.itemSprite;
-		if(level == 0)
+		if(!isEquip)
 		{
 			descriptionText.text = so.weaponStatList[level].description;
 		}

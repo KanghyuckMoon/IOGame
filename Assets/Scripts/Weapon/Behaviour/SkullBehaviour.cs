@@ -30,7 +30,16 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 
 	private Transform targetTrm;
 	private WeaponStat weaponStat;
+	private ModelHandler modelHandler;
+	private Vector3 lastPoint;
+	private Vector3 currentDirection;
 
+	private void Start()
+	{
+		modelHandler = GetComponentInChildren<ModelHandler>();
+	}
+
+	[ServerCallback]
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Enemy"))
@@ -45,12 +54,35 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 
 	void FixedUpdate()
 	{
-		if (!isServer) return;
-		Vector3 direction = (targetTrm.position - transform.position);
-		direction.y = 0;
-		direction = direction.normalized;
-		transform.LookAt(targetTrm);
-		transform.Translate(direction * weaponStat.speed * Time.fixedDeltaTime);
+		Vector3 direction = Vector3.zero;
+		if (isServer)
+		{
+			if (targetTrm == null)
+			{
+				DestoryWeaponRpc();
+			}
+			direction = (targetTrm.position - transform.position);
+			direction.y = 0;
+			direction = direction.normalized;
+			transform.Translate(direction * weaponStat.speed * Time.fixedDeltaTime);
+			Rotate(direction);
+		}
+		else if (isClient)
+		{
+			direction = transform.position - lastPoint;
+			direction.y = 0;
+			direction = direction.normalized;
+			currentDirection = direction;
+			if (direction != Vector3.zero)
+			{
+				Rotate(direction);
+				lastPoint = transform.position;
+			}
+		}
+	}
+	private void Rotate(Vector3 direction)
+	{
+		modelHandler.SetRotate(direction);
 	}
 
 	void IWeapon.SetWeaponStat(WeaponStat weaponStat)

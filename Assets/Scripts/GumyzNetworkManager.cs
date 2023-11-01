@@ -65,8 +65,7 @@ public class GumyzNetworkManager : NetworkManager
 
     public GameObject Spawn(string key, Vector3 pos)
 	{
-        GameObject instance = Instantiate(spawnPrefabs.Find(prefab => prefab.name == key));
-        instance.transform.position = pos;
+        GameObject instance = SpawnWithOutSpawn(key, pos);
         NetworkServer.Spawn(instance);
         return instance;
     }
@@ -75,7 +74,6 @@ public class GumyzNetworkManager : NetworkManager
     {
         GameObject instance = Instantiate(spawnPrefabs.Find(prefab => prefab.name == key));
         instance.transform.position = pos;
-        //NetworkServer.Spawn(instance);
         return instance;
     }
 

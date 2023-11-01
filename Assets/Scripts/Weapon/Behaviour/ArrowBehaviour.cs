@@ -48,7 +48,7 @@ public class ArrowBehaviour : NetworkBehaviour, IWeapon
 	void FixedUpdate()
 	{
 		if (!isServer) return;
-		transform.Translate(direction * weaponStat.speed * Time.fixedDeltaTime);
+		transform.Translate(direction * weaponStat.speed * Time.fixedDeltaTime, Space.World);
 	}
 
 	void IWeapon.SetWeaponStat(WeaponStat weaponStat)

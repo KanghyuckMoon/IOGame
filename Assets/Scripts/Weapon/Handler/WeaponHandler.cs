@@ -12,6 +12,7 @@ public class WeaponHandler : NetworkBehaviour
 			return level >= weaponStat.maxLevel;
 		}
 	}
+	public bool IsEquip => isEquip;
 
 	public WeaponSO WeaponStatSO => weaponStat;
 	public int Level => level;

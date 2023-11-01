@@ -45,7 +45,7 @@ public class ClientHUD : MonoBehaviour
 			int j = i;
 			if (j < weaponHandlerList.Count)
 			{
-				upgradeButton[j].SetUpgradeButton(weaponHandlerList[i].WeaponStatSO, weaponHandlerList[i].Level, () => {
+				upgradeButton[j].SetUpgradeButton(weaponHandlerList[i].WeaponStatSO, weaponHandlerList[i].IsEquip, weaponHandlerList[i].Level, () => {
 					player.LevelUp();
 					weaponHandlerList[j].LevelUp();
 				});

@@ -60,6 +60,20 @@ public class Player : NetworkBehaviour
         expObj.SetActive(false);
     }
 
+    [ClientRpc]
+    private void AddExp(int add)
+    {
+        exp+= add;
+        if (exp >= level * level)
+        {
+            exp = 0;
+            level++;
+            OnLevelChange?.Invoke(currentLevel, level);
+        }
+        OnExpChange?.Invoke(exp, level);
+    }
+
+
     [Command]
     public void LevelUp()
 	{
@@ -95,6 +109,11 @@ public class Player : NetworkBehaviour
             rigid.velocity = direction * speed * Time.fixedDeltaTime;
             ConsiderFieldLimit();
             RotateModel(direction);
+
+            if(Input.GetKeyDown(KeyCode.Space))
+			{
+                AddExp(1);
+            }
         }
     }
 
@@ -142,6 +161,7 @@ public class Player : NetworkBehaviour
     [Command]
     private void SetDirection(Vector3 direction)
     {
+        lastDirection = direction;
         SetDirectionRpc(direction);
     }
 
