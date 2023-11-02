@@ -48,7 +48,14 @@ public class SwordBehaviour : NetworkBehaviour, IWeapon
 	void FixedUpdate()
 	{
 		if (!isServer) return;
-		transform.position = targetTrm.position;
+		try
+		{
+			transform.position = targetTrm.position;
+		}
+		catch
+		{
+			DestoryWeaponRpc();
+		}
 	}
 
 	void IWeapon.SetWeaponStat(WeaponStat weaponStat)

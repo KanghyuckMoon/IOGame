@@ -49,8 +49,15 @@ public class BoneBehaviour : NetworkBehaviour, IWeapon
 	void FixedUpdate()
 	{
 		if (!isServer) return;
-		time += Time.fixedDeltaTime * weaponStat.speed;
-		transform.position = targetTrm.transform.position + new Vector3(Mathf.Cos(time), 0, Mathf.Sin(time) * weaponStat.range);
+		try
+		{
+			time += Time.fixedDeltaTime * weaponStat.speed;
+			transform.position = targetTrm.transform.position + new Vector3(Mathf.Cos(time), 0, Mathf.Sin(time) * weaponStat.range);
+		}
+		catch
+		{
+			DestoryWeaponRpc();
+		}
 	}
 
 	void IWeapon.SetWeaponStat(WeaponStat weaponStat)

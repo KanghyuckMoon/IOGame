@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,15 +7,18 @@ using Mirror;
 [AddComponentMenu("")]
 public class GumyzNetworkManager : NetworkManager
 {
+    public LeaderBoard LeaderBoard => leaderBoard;
     public readonly List<Player> playerList = new List<Player>();
     public readonly Dictionary<int, Transform> playerDictionary = new Dictionary<int, Transform>();
-    [SerializeField] MonsterSpawner monsterSpawner;
+    [SerializeField] LeaderBoard leaderBoard;
     private int monsterCount;
     private float delay = 0f;
 
     public override void OnStartServer()
     {
         StartCoroutine(SpawnMonster());
+        NetworkServer.Spawn(leaderBoard.gameObject);
+        leaderBoard.gameObject.SetActive(true);
     }
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
@@ -34,11 +37,13 @@ public class GumyzNetworkManager : NetworkManager
                 Debug.LogError(e);
 			}
         }
+        leaderBoard.UpdateLeaderBoard();
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
         base.OnServerDisconnect(conn);
+        leaderBoard.UpdateLeaderBoard();
     }
 
     private IEnumerator SpawnMonster()
@@ -73,6 +78,13 @@ public class GumyzNetworkManager : NetworkManager
         GameObject instance = Instantiate(spawnPrefabs.Find(prefab => prefab.name == key));
         instance.transform.position = pos;
         return instance;
+    }
+
+    public List<Player> GetHighPlayerList()
+    {
+        List<Player> resultList;
+        resultList = playerList.OrderByDescending(g => g.Level).Take(10).ToList();
+        return resultList;
     }
 
 }

@@ -11,15 +11,14 @@ public class JoinBehaviour : NetworkBehaviour
 	[SerializeField] private Canvas joinCanvas;
 	[SerializeField] private Canvas dieCanvas;
 	[SerializeField] private TMP_InputField inputField;
+	private Player playObject;
 	private NetworkConnectionToClient conn;
-	private static JoinBehaviour joinBehaviour;
 	
 	private void Start()
 	{
 		if (isLocalPlayer)
 		{
 			joinCanvas.gameObject.SetActive(true);
-			joinBehaviour = this;
 		}
 	}
 
@@ -28,13 +27,12 @@ public class JoinBehaviour : NetworkBehaviour
 		this.conn = conn;
 	}
 
-	[Command]
+	[Client]
 	public void Retry()
 	{
-		AddPlayer();
-		Player player = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary[conn.connectionId].GetComponent<Player>();
-		player.Retry();
 		dieCanvas.gameObject.SetActive(false);
+		AddPlayer();
+		playObject.Retry();
 	}
 
 	[Client]
@@ -51,14 +49,18 @@ public class JoinBehaviour : NetworkBehaviour
 		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player.GetComponent<Player>());
 		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary.Add(conn.connectionId, player.transform);
 		NetworkServer.Spawn(player, gameObject);
-		player.GetComponent<Player>().OnDie += ShowDieCanvas;
-		RpcHandleMessage(message);
+		playObject = player.GetComponent<Player>();
+		RpcHandleMessage(playObject);
 	}
 
 	[ClientRpc]
-	private void RpcHandleMessage(string message)
+	private void RpcHandleMessage(Player player)
 	{
-
+		if (isOwned)
+		{
+			player.OnDie += ShowDieCanvas;
+			playObject = player;
+		}
 	}
 
 	public void ShowDieCanvas()
@@ -73,14 +75,29 @@ public class JoinBehaviour : NetworkBehaviour
 	[Command]
 	private void RemovePlayer()
 	{
-		Player player = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary[conn.connectionId].GetComponent<Player>();
-		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Remove(player);
+		if(((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Contains(playObject))
+		{
+			((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Remove(playObject);
+		}
+	}
+	[Command]
+	private void RemovePlayerDic()
+	{
+		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary.Remove(conn.connectionId);
 	}
 
 	[Command]
 	private void AddPlayer()
 	{
-		Player player = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary[conn.connectionId].GetComponent<Player>();
-		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player);
+		if (!((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Contains(playObject))
+		{
+			((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(playObject);
+		}
+	}
+
+	public override void OnStopClient()
+	{
+		RemovePlayer();
+		RemovePlayerDic();
 	}
 }

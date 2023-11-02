@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Player : NetworkBehaviour
 {
+    public string Name;
+    public int Level => level;
     public float speed = 30;
     public Rigidbody rigid;
     public Vector3 LastDirection => lastDirection;
@@ -17,7 +19,7 @@ public class Player : NetworkBehaviour
     private int level = 1;
     private int currentLevel = 1;
     private int exp = 0;
-    private Vector3 lastDirection;
+    private Vector3 lastDirection = Vector3.right;
     private int hp = 20;
 
     public Action<int, int> OnExpChange;
@@ -52,7 +54,7 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            HitRpc(hp);
+            HitRpc(hp, lastDirection);
         }
     }
 
@@ -61,7 +63,8 @@ public class Player : NetworkBehaviour
     {
         if (other.CompareTag("Exp"))
         {
-            AddExp(other.gameObject);
+            AddExp(1);
+            ExpObjectDelete(other.gameObject);
         }
         else if(other.CompareTag("Enemy"))
 		{
@@ -70,21 +73,12 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void AddExp(GameObject expObj)
+    private void ExpObjectDelete(GameObject expObj)
 	{
-        exp++;
-        if(exp >= level * level)
-		{
-            exp = 0;
-            level++;
-            OnLevelChange?.Invoke(currentLevel, level);
-        }
-        OnExpChange?.Invoke(exp, level);
-
         expObj.SetActive(false);
     }
 
-    [ClientRpc]
+    [Command]
     private void AddExp(int add)
     {
         exp+= add;
@@ -92,8 +86,17 @@ public class Player : NetworkBehaviour
         {
             exp = 0;
             level++;
-            OnLevelChange?.Invoke(currentLevel, level);
+            ((GumyzNetworkManager)GumyzNetworkManager.singleton).LeaderBoard.UpdateLeaderBoard();
         }
+        AddExpRpc(exp, level);
+    }
+
+    [ClientRpc]
+    private void AddExpRpc(int exp, int level)
+	{
+        this.exp = exp;
+        this.level = level;
+        OnLevelChange?.Invoke(currentLevel, level);
         OnExpChange?.Invoke(exp, level);
     }
 
@@ -198,12 +201,21 @@ public class Player : NetworkBehaviour
     [Client]
     private void SetNickClient()
     {
-        SetNickName(PlayerPrefs.GetString("Player"));
+        string name = PlayerPrefs.GetString("Player");
+        SetNickName(name);
+    }
+
+    [Command]
+    private void SetNickServer(string name)
+	{
+        Name = name;
+
     }
 
     [Command]
     private void SetNickName(string text)
 	{
+        Name = text;
         SetNickNameRpc(text);
     }
 
@@ -221,11 +233,11 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void HitRpc(int currentHp)
+    private void HitRpc(int currentHp, Vector3 lastDirection)
     {
         hp = currentHp;
-        hpImage.fillAmount = (float)hp / 20;
         transform.Translate(-lastDirection * 1);
+        hpImage.fillAmount = (float)hp / 20;
         modelHandler.HitChangeMaterial();
     }
 
@@ -255,7 +267,7 @@ public class Player : NetworkBehaviour
         hpImage.fillAmount = (float)hp / 20;
         gameObject.SetActive(true);
         inventoryBehaviour.Retry();
-        OnExpChange.Invoke(exp, level);
-        OnLevelChange.Invoke(currentLevel, level);
+        OnExpChange?.Invoke(exp, level);
+        OnLevelChange?.Invoke(currentLevel, level);
     }
 }
