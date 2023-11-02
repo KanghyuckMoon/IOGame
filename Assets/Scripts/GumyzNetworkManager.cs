@@ -18,8 +18,8 @@ public class GumyzNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         StartCoroutine(SpawnMonster());
-        NetworkServer.Spawn(leaderBoard.gameObject);
-        leaderBoard.gameObject.SetActive(true);
+        //NetworkServer.Spawn(leaderBoard.gameObject);
+        //leaderBoard.gameObject.SetActive(true);
     }
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)

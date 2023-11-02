@@ -19,6 +19,10 @@ public class Monster : NetworkBehaviour
 		modelHandler = GetComponentInChildren<ModelHandler>();
 		hp = 10;
 		count++;
+		if (isServer)
+		{
+			ActiveRpc(true);
+		}
 	}
 
 	private void FixedUpdate()

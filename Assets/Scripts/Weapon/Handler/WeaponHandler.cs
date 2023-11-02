@@ -24,7 +24,6 @@ public class WeaponHandler : NetworkBehaviour
 
 	[SerializeField] private InventoryBehaviour inventory;
 
-	private float time = 0f;
 	private bool isEquip;
 		
 	protected virtual void FixedUpdate()

@@ -35,6 +35,15 @@ public class BoneBehaviour : NetworkBehaviour, IWeapon
 	private float time = 0f;
 	private GameObject player;
 
+	private void OnEnable()
+	{
+		if (isServer)
+		{
+			ActiveRpc(true);
+		}
+	}
+
+	[ServerCallback]
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Enemy"))
@@ -82,5 +91,11 @@ public class BoneBehaviour : NetworkBehaviour, IWeapon
 	public void SetPlayer(GameObject player)
 	{
 		this.player = player;
+	}
+
+	[ClientRpc]
+	private void ActiveRpc(bool b)
+	{
+		gameObject.SetActive(b);
 	}
 }

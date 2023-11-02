@@ -35,6 +35,16 @@ public class ArrowBehaviour : NetworkBehaviour, IWeapon
 	private Vector3 direction;
 	private GameObject player;
 
+	private void OnEnable()
+	{
+		if (isServer)
+		{
+			ActiveRpc(true);
+			SetDirectionRpc(direction);
+		}
+	}
+
+	[ServerCallback]
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Enemy"))
@@ -80,5 +90,17 @@ public class ArrowBehaviour : NetworkBehaviour, IWeapon
 	public void SetPlayer(GameObject player)
 	{
 		this.player = player;
+	}
+
+	[ClientRpc]
+	private void ActiveRpc(bool b)
+	{
+		gameObject.SetActive(b);
+	}
+	[ClientRpc]
+	private void SetDirectionRpc(Vector3 direction)
+	{
+		this.direction = direction;
+		transform.forward = direction;
 	}
 }

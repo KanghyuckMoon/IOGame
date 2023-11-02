@@ -36,6 +36,14 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 	private Vector3 currentDirection;
 	private GameObject player;
 
+	private void OnEnable()
+	{
+		if (isServer)
+		{
+			ActiveRpc(true);
+		}
+	}
+
 	private void Start()
 	{
 		modelHandler = GetComponentInChildren<ModelHandler>();
@@ -108,5 +116,11 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 	public void SetPlayer(GameObject player)
 	{
 		this.player = player;
+	}
+
+	[ClientRpc]
+	private void ActiveRpc(bool b)
+	{
+		gameObject.SetActive(b);
 	}
 }
