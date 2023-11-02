@@ -57,4 +57,11 @@ public class WeaponHandler : NetworkBehaviour
 			level++;
 		}
 	}
+
+	public void Retry()
+	{
+		isEquip = false;
+		level = 0;
+		gameObject.SetActive(false);
+	}
 }

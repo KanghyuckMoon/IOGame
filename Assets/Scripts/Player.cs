@@ -1,3 +1,4 @@
+using System;
 using Mirror;
 using UnityEngine;
 using TMPro;
@@ -12,15 +13,16 @@ public class Player : NetworkBehaviour
     [SerializeField] private ClientHUD clientHud;
     [SerializeField] private TextMeshProUGUI nickName;
     [SerializeField] private Image hpImage;
+    [SerializeField] private InventoryBehaviour inventoryBehaviour;
     private int level = 1;
     private int currentLevel = 1;
     private int exp = 0;
     private Vector3 lastDirection;
     private int hp = 20;
 
-    public System.Action<int, int> OnExpChange;
-    public System.Action<int, int> OnLevelChange;
-
+    public Action<int, int> OnExpChange;
+    public Action<int, int> OnLevelChange;
+    public Action OnDie;
 
     private void Start()
     {
@@ -36,7 +38,7 @@ public class Player : NetworkBehaviour
             OnLevelChange += clientHud.UpdateLevel;
             OnExpChange.Invoke(exp, level);
             OnLevelChange.Invoke(currentLevel, level);
-
+            
         }
     }
 
@@ -215,6 +217,7 @@ public class Player : NetworkBehaviour
     private void ActiveRpc(bool b)
     {
         gameObject.SetActive(b);
+        OnDie?.Invoke();
     }
 
     [ClientRpc]
@@ -224,5 +227,35 @@ public class Player : NetworkBehaviour
         hpImage.fillAmount = (float)hp / 20;
         transform.Translate(-lastDirection * 1);
         modelHandler.HitChangeMaterial();
+    }
+
+    public void Retry()
+	{
+        RetryServer();
+    }
+
+    [Command]
+    private void RetryServer()
+    {
+        transform.position = Utils.GetRandomPosition();
+        level = 1;
+        currentLevel = 1;
+        hp = 20;
+        exp = 0;
+        RetryRpc(level, currentLevel, exp, hp);
+    }
+
+    [ClientRpc]
+    private void RetryRpc(int level, int currentLevel, int exp, int hp)
+    {
+        this.level = level;
+        this.currentLevel = currentLevel;
+        this.exp = exp;
+        this.hp = hp;
+        hpImage.fillAmount = (float)hp / 20;
+        gameObject.SetActive(true);
+        inventoryBehaviour.Retry();
+        OnExpChange.Invoke(exp, level);
+        OnLevelChange.Invoke(currentLevel, level);
     }
 }

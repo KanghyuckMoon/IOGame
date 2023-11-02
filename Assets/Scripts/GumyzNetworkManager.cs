@@ -23,8 +23,7 @@ public class GumyzNetworkManager : NetworkManager
         GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
         player.GetComponent<JoinBehaviour>().SetClient(conn);
         NetworkServer.AddPlayerForConnection(conn, player);
-
-        foreach(var playerObj in playerList)
+        foreach (var playerObj in playerList)
 		{
 			try
             {

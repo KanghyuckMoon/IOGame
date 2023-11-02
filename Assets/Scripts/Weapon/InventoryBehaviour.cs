@@ -9,6 +9,15 @@ public class InventoryBehaviour : MonoBehaviour
 	[SerializeField] private List<WeaponHandler> allWeaponHandlerList = new List<WeaponHandler>();
 	private List<WeaponHandler> equipWeaponList = new List<WeaponHandler>();
 
+	public void Retry()
+	{
+		equipWeaponList.Clear();
+		foreach (var weapon in allWeaponHandlerList)
+		{
+			weapon.Retry();
+		}
+	}
+
 	public void AddEquipWeapon(WeaponHandler weaponHandler)
 	{
 		equipWeaponList.Add(weaponHandler);

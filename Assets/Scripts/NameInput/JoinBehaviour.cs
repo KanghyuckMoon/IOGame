@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,14 +9,17 @@ using TMPro;
 public class JoinBehaviour : NetworkBehaviour
 {
 	[SerializeField] private Canvas joinCanvas;
+	[SerializeField] private Canvas dieCanvas;
 	[SerializeField] private TMP_InputField inputField;
 	private NetworkConnectionToClient conn;
-
+	private static JoinBehaviour joinBehaviour;
+	
 	private void Start()
 	{
 		if (isLocalPlayer)
 		{
 			joinCanvas.gameObject.SetActive(true);
+			joinBehaviour = this;
 		}
 	}
 
@@ -24,11 +28,20 @@ public class JoinBehaviour : NetworkBehaviour
 		this.conn = conn;
 	}
 
+	[Command]
+	public void Retry()
+	{
+		AddPlayer();
+		Player player = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary[conn.connectionId].GetComponent<Player>();
+		player.Retry();
+		dieCanvas.gameObject.SetActive(false);
+	}
+
 	[Client]
 	public void Join()
 	{
 		CmdSendMessage(inputField.text);
-		gameObject.SetActive(false);
+		joinCanvas.gameObject.SetActive(false);
 	}
 
 	[Command]
@@ -38,6 +51,7 @@ public class JoinBehaviour : NetworkBehaviour
 		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player.GetComponent<Player>());
 		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary.Add(conn.connectionId, player.transform);
 		NetworkServer.Spawn(player, gameObject);
+		player.GetComponent<Player>().OnDie += ShowDieCanvas;
 		RpcHandleMessage(message);
 	}
 
@@ -45,5 +59,28 @@ public class JoinBehaviour : NetworkBehaviour
 	private void RpcHandleMessage(string message)
 	{
 
+	}
+
+	public void ShowDieCanvas()
+	{
+		if (isOwned)
+		{
+			RemovePlayer();
+			dieCanvas.gameObject.SetActive(true);
+		}
+	}
+
+	[Command]
+	private void RemovePlayer()
+	{
+		Player player = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary[conn.connectionId].GetComponent<Player>();
+		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Remove(player);
+	}
+
+	[Command]
+	private void AddPlayer()
+	{
+		Player player = ((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary[conn.connectionId].GetComponent<Player>();
+		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player);
 	}
 }

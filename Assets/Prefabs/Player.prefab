@@ -1581,6 +1581,7 @@ MonoBehaviour:
   clientHud: {fileID: 6148970286958403053}
   nickName: {fileID: 6989507967975538718}
   hpImage: {fileID: 3932019642520285645}
+  inventoryBehaviour: {fileID: 7076059888741367611}
 --- !u!114 &2993300202212134169
 MonoBehaviour:
   m_ObjectHideFlags: 0
