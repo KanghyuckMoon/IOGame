@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2536506044501132391}
   - component: {fileID: 9023511859180191162}
   - component: {fileID: 4023708636785411307}
+  - component: {fileID: -8457780743763732696}
   m_Layer: 0
   m_Name: Exp
   m_TagString: Exp
@@ -107,6 +108,18 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
+--- !u!114 &-8457780743763732696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804992340942165059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ca4d7299cd0bc4b98032049b37e9fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4925108717987858342
 GameObject:
   m_ObjectHideFlags: 0

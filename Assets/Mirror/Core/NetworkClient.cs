@@ -816,7 +816,7 @@ namespace Mirror
             if (prefabs.ContainsKey(assetId))
             {
                 // this is error because SpawnPrefab checks prefabs before handler
-                Debug.LogError($"assetId '{assetId}' is already used by prefab '{prefabs[assetId].name}', unregister the prefab first before trying to add handler");
+                //Debug.LogError($"assetId '{assetId}' is already used by prefab '{prefabs[assetId].name}', unregister the prefab first before trying to add handler");
             }
 
             NetworkIdentity[] identities = prefab.GetComponentsInChildren<NetworkIdentity>();

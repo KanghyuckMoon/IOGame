@@ -47,7 +47,7 @@ public class JoinBehaviour : NetworkBehaviour
 	{
 		GameObject player = Instantiate(NetworkManager.singleton.spawnPrefabs.Find(prefab => prefab.name == "Player"), Vector3.zero, Quaternion.identity);
 		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerList.Add(player.GetComponent<Player>());
-		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary.Add(conn.connectionId, player.transform);
+		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDic.Add(conn.connectionId, player.transform);
 		NetworkServer.Spawn(player, gameObject);
 		playObject = player.GetComponent<Player>();
 		RpcHandleMessage(playObject);
@@ -83,7 +83,7 @@ public class JoinBehaviour : NetworkBehaviour
 	[Command]
 	private void RemovePlayerDic()
 	{
-		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDictionary.Remove(conn.connectionId);
+		((GumyzNetworkManager)GumyzNetworkManager.singleton).playerDic.Remove(conn.connectionId);
 	}
 
 	[Command]

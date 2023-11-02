@@ -3,16 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using JamesFrowen.Spawning;
 
 [AddComponentMenu("")]
 public class GumyzNetworkManager : NetworkManager
 {
     public LeaderBoard LeaderBoard => leaderBoard;
     public readonly List<Player> playerList = new List<Player>();
-    public readonly Dictionary<int, Transform> playerDictionary = new Dictionary<int, Transform>();
+    public readonly Dictionary<int, Transform> playerDic = new Dictionary<int, Transform>();
+    private readonly Dictionary<string, MirrorPrefabPool> mirrorPrefabPoolDic = new Dictionary<string, MirrorPrefabPool>();
+    public static int expCount;
     [SerializeField] LeaderBoard leaderBoard;
-    private int monsterCount;
-    private float delay = 0f;
 
     public override void OnStartServer()
     {
@@ -51,18 +52,24 @@ public class GumyzNetworkManager : NetworkManager
         while(true)
 		{
             yield return new WaitForSeconds(1f);
-            MonsterSpawn();
-            ExpSpawn();
+            if (Monster.count < 20)
+            {
+                MonsterSpawn();
+            }
+            if (expCount < 20)
+            {
+                ExpSpawn();
+            }
         }
 	}
 
     public void MonsterSpawn()
     {
-        monsterCount++;
         Spawn("Monster", Utils.GetRandomPosition());
     }
     public void ExpSpawn()
     {
+        expCount++;
         Spawn("Exp", Utils.GetRandomPosition());
     }
 
@@ -75,8 +82,12 @@ public class GumyzNetworkManager : NetworkManager
 
     public GameObject SpawnWithOutSpawn(string key, Vector3 pos)
     {
-        GameObject instance = Instantiate(spawnPrefabs.Find(prefab => prefab.name == key));
-        instance.transform.position = pos;
+        if (!mirrorPrefabPoolDic.ContainsKey(key))
+		{
+            GameObject prefab = spawnPrefabs.Find(prefab => prefab.name == key);
+            mirrorPrefabPoolDic.Add(key, new MirrorPrefabPool(prefab, 30));
+		}
+        GameObject instance = mirrorPrefabPoolDic[key].Spawn(pos, Quaternion.identity).gameObject;
         return instance;
     }
 

@@ -3,6 +3,7 @@ using Mirror;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using JamesFrowen.Spawning;
 
 public class Player : NetworkBehaviour
 {
@@ -62,8 +63,10 @@ public class Player : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Exp"))
-        {
-            AddExp(1);
+		{
+			AddExp(1);
+            UnSpawnExpObj(other.gameObject.GetComponent<PrefabPoolBehaviour>());
+
             ExpObjectDelete(other.gameObject);
         }
         else if(other.CompareTag("Enemy"))
@@ -72,13 +75,19 @@ public class Player : NetworkBehaviour
 		}
     }
 
+    [Server]
+    private void UnSpawnExpObj(PrefabPoolBehaviour expObj)
+    {
+        GumyzNetworkManager.expCount--;
+        expObj.Unspawn();
+    }
+
     [ClientRpc]
     private void ExpObjectDelete(GameObject expObj)
 	{
         expObj.SetActive(false);
     }
 
-    [Command]
     private void AddExp(int add)
     {
         exp+= add;
@@ -203,13 +212,6 @@ public class Player : NetworkBehaviour
     {
         string name = PlayerPrefs.GetString("Player");
         SetNickName(name);
-    }
-
-    [Command]
-    private void SetNickServer(string name)
-	{
-        Name = name;
-
     }
 
     [Command]

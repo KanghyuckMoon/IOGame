@@ -28,7 +28,7 @@ public class LeaderBoard : NetworkBehaviour
 		text.text = "";
 		for (int i = 0; i < 10; ++i)
 		{
-			text.text = players[0];
+			text.text += players[i];
 			text.text += '\n';
 		}
 	}

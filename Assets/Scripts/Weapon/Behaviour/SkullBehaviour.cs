@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using JamesFrowen.Spawning;
 
 public class SkullBehaviour : NetworkBehaviour, IWeapon
 {
@@ -93,6 +94,7 @@ public class SkullBehaviour : NetworkBehaviour, IWeapon
 		IEnumerator Delay()
 		{
 			yield return new WaitForSeconds(weaponStat.duration);
+			GetComponent<PrefabPoolBehaviour>().Unspawn();
 			DestoryWeaponRpc();
 		}
 	}

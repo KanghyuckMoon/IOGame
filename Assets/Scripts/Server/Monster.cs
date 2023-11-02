@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using JamesFrowen.Spawning;
 
 public class Monster : NetworkBehaviour
 {
@@ -11,12 +12,13 @@ public class Monster : NetworkBehaviour
 	private Vector3 lastPoint;
 	private int hp = 10;
 	private Vector3 currentDirection;
+	public static int count;
 
-	private void Start()
+	private void OnEnable()
 	{
 		modelHandler = GetComponentInChildren<ModelHandler>();
 		hp = 10;
-		//Set Target
+		count++;
 	}
 
 	private void FixedUpdate()
@@ -88,6 +90,8 @@ public class Monster : NetworkBehaviour
 		hp -= damage;
 		if (hp <= 0)
 		{
+			count--;
+			GetComponent<PrefabPoolBehaviour>().Unspawn();
 			((GumyzNetworkManager)GumyzNetworkManager.singleton).Spawn("Exp", transform.position);
 			ActiveRpc(false);
 		}
